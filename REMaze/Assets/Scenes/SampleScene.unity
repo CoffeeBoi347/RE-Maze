@@ -2785,7 +2785,7 @@ MonoBehaviour:
   currentVelocity: 0
   walkSpeed: 25
   sprintSpeed: 50
-  dashSpeed: 60
+  dashSpeed: 350
   jumpHeight: 20
   gravity: 30
   speedChangeRate: 300

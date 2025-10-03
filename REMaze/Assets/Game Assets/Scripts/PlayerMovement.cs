@@ -61,21 +61,29 @@ public class PlayerMovement : MonoBehaviour
 
     void MovementControls()
     {
-        if(horizontalInput == 0 && verticalInput == 0)
+        if(horizontalInput == 0 && verticalInput == 0 && currentAction != PlayerActions.Crouching)
         {
             currentAction = PlayerActions.Idle;
+            ResetHeight();
         }
         else if (Input.GetKey(KeyCode.LeftShift))
         {
             currentAction = PlayerActions.Sprinting;
+            ResetHeight();
         }
         else if (Input.GetKey(KeyCode.LeftControl))
         {
             currentAction = PlayerActions.Dashing;
+            ResetHeight();
         }
         else if (Input.GetKeyDown(KeyCode.Space))
         {
             currentAction = PlayerActions.Jumping;
+            ResetHeight();
+        }
+        else if (Input.GetKey(KeyCode.C))
+        {
+            currentAction = PlayerActions.Crouching;
         }
         else
         {
@@ -106,7 +114,16 @@ public class PlayerMovement : MonoBehaviour
                     rb.AddForce(Vector3.up * jumpHeight, ForceMode.Impulse);
                 }
                 break;
+
+            case PlayerActions.Crouching:
+                transform.localScale = new Vector3(transform.localScale.x, 2.5f, transform.localScale.z);
+                break;
         }
+    }
+
+    void ResetHeight()
+    {
+        transform.localScale = new Vector3(transform.localScale.x, 5, transform.localScale.z);
     }
 
     public bool isGrounded()
@@ -127,5 +144,6 @@ public enum PlayerActions
     Walking,
     Sprinting,
     Dashing,
-    Jumping
+    Jumping,
+    Crouching
 }
