@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 
 [RequireComponent(typeof(Rigidbody))] // physics based movement (as the characters will be ragdolls)
@@ -15,8 +16,11 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private float speedChangeRate;
     [SerializeField] private float quaternionSpeed;
     [SerializeField] private float quaternionChangeRate;
+    [SerializeField] private float jumpInterval;
     private float horizontalInput;
     private float verticalInput;
+
+    private bool isJump = false;
 
     [Header("Movement Snapping Settings")]
 
@@ -76,7 +80,7 @@ public class PlayerMovement : MonoBehaviour
             currentAction = PlayerActions.Dashing;
             ResetHeight();
         }
-        else if (Input.GetKeyDown(KeyCode.Space))
+        else if (Input.GetKey(KeyCode.Space))
         {
             currentAction = PlayerActions.Jumping;
             ResetHeight();
@@ -108,11 +112,13 @@ public class PlayerMovement : MonoBehaviour
                 currentVelocity = Mathf.Lerp(currentVelocity, dashSpeed, Time.deltaTime * speedChangeRate);
                 break;
 
-            case PlayerActions.Jumping:
+            case PlayerActions.Jumping when !isJump:
                 if (isGrounded())
                 {
                     rb.AddForce(Vector3.up * jumpHeight, ForceMode.Impulse);
                 }
+                isJump = true;
+                StartCoroutine(ResetJump());
                 break;
 
             case PlayerActions.Crouching:
@@ -130,6 +136,12 @@ public class PlayerMovement : MonoBehaviour
     {
         RaycastHit hit;
         return Physics.Raycast(transform.position, Vector3.down, out hit, groundedOffset); // casting a ray from origin to vector3.down and checking if it hits the ground. required for jumping
+    }
+
+    private IEnumerator ResetJump()
+    {
+        yield return new WaitForSeconds(jumpInterval);
+        isJump = false;
     }
 
     private void OnDrawGizmos() // optional: visualize isGrounded() on the editor

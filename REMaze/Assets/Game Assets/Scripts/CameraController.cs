@@ -14,5 +14,9 @@ public class CameraController : MonoBehaviour
         Vector3 smoothPos = Vector3.Lerp(transform.position, desiredPos, smoothSpeed);
 
         transform.position = smoothPos;
+
+        float mouseX = Input.GetAxis("Mouse X");
+
+        transform.RotateAround(target.position, Vector3.up, mouseX);
     }
 }
