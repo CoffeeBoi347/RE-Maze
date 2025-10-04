@@ -18,6 +18,6 @@ public class HealthManager : MonoBehaviour
     
     public void Die()
     {
-        Destroy(gameObject);
+        this.GetComponent<ChasingAI>().OnDead();
     }
 }

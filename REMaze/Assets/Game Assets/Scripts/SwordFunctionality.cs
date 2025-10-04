@@ -7,7 +7,7 @@ public class SwordFunctionality : MonoBehaviour
     public Animator swordAnim;
     public WeaponItem swordItem;
     public LayerMask enemyMask;
-    private float attackRange = 20;
+    private float attackRange = 25;
     public GameObject slashFXObj;
     public bool hasPlayed = false;
     public void InjectSwordAnimator()
